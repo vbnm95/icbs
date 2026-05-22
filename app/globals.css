@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  background: #f8f4ee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f8f4ee;
+}
+
+body {
+  min-height: 100svh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.86), transparent 34rem),
+    #f8f4ee;
+  color: #173b67;
+  font-family: Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(79, 143, 234, 0.42);
+  outline-offset: 3px;
+}
