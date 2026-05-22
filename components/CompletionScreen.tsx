@@ -32,11 +32,15 @@ export function CompletionScreen({ onReset }: CompletionScreenProps) {
             🐶
           </div>
           <div className="ml-20 min-h-28 py-2 text-2xl font-black leading-relaxed text-[#101D2E]">
-            부스 직원에게
+            설문 참여 확인 후
             <br />
-            이 화면을 보여주시면
+            인섹탈 콤보 
             <br />
-            사은품을 드려요.
+            안내서를 받으시면
+            <br />
+            웰케어 데일리 5일치
+            <br />
+            체험팩을 드립니다.
           </div>
           <ShieldCheck
             className="absolute bottom-5 right-5 size-10 text-[#4F8FEA]"
