@@ -24,8 +24,8 @@ export function KakaoChannelScreen({
   return (
     <SurveyLayout
       progress={98}
-      title="웰케어 카카오톡 채널 추가"
-      subtitle="채널을 추가하시면 할인 및 이벤트 소식을 더 편하게 받아보실 수 있어요."
+      title="설문지 제출을 누르시면 참여가 완료됩니다 감사합니다 :)"
+      subtitle="설문 참여 확인 후 인섹탈 콤보 안내서를 받으시면 웰케어 데일리 5일치 체험팩을 드립니다!"
       showBack={!isSubmitting}
       onBack={onBack}
     >

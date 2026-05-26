@@ -2,8 +2,8 @@ import type { SurveyAnswers } from "@/types/survey";
 
 const GOOGLE_FORM_ENV_KEYS = [
   "GOOGLE_FORM_ACTION_URL",
-  "GOOGLE_FORM_ENTRY_NAME",
-  "GOOGLE_FORM_ENTRY_PHONE",
+  "GOOGLE_FORM_ENTRY_SEX",
+  "GOOGLE_FORM_ENTRY_AGE_RANGE",
   "GOOGLE_FORM_ENTRY_CURRENT_USE",
   "GOOGLE_FORM_ENTRY_REASON",
   "GOOGLE_FORM_ENTRY_INCONVENIENCE",
@@ -50,8 +50,8 @@ export async function submitToGoogleForm(answers: SurveyAnswers) {
   const config = getGoogleFormConfig();
   const formData = new URLSearchParams();
 
-  formData.append(config.GOOGLE_FORM_ENTRY_NAME, answers.name.trim());
-  formData.append(config.GOOGLE_FORM_ENTRY_PHONE, answers.phone.trim());
+  formData.append(config.GOOGLE_FORM_ENTRY_SEX, answers.sex);
+  formData.append(config.GOOGLE_FORM_ENTRY_AGE_RANGE, answers.ageRange);
   formData.append(config.GOOGLE_FORM_ENTRY_CURRENT_USE, answers.currentUse);
   formData.append(config.GOOGLE_FORM_ENTRY_INCONVENIENCE, answers.inconvenience);
   formData.append(config.GOOGLE_FORM_ENTRY_WILLINGNESS, answers.willingness);

@@ -17,8 +17,8 @@ npm run dev
 
 ```bash
 GOOGLE_FORM_ACTION_URL=https://docs.google.com/forms/d/e/FORM_ID/formResponse
-GOOGLE_FORM_ENTRY_NAME=entry.xxxxxxxxxx
-GOOGLE_FORM_ENTRY_PHONE=entry.xxxxxxxxxx
+GOOGLE_FORM_ENTRY_SEX=entry.xxxxxxxxxx
+GOOGLE_FORM_ENTRY_AGE_RANGE=entry.xxxxxxxxxx
 GOOGLE_FORM_ENTRY_CURRENT_USE=entry.xxxxxxxxxx
 GOOGLE_FORM_ENTRY_REASON=entry.xxxxxxxxxx
 GOOGLE_FORM_ENTRY_INCONVENIENCE=entry.xxxxxxxxxx
@@ -41,6 +41,8 @@ GOOGLE_FORM_ENTRY_WILLINGNESS=entry.xxxxxxxxxx
 
 Google Form 문항의 선택지 텍스트와 앱에서 전송하는 값은 정확히 일치해야 합니다.
 
+- Step 1 성별은 `수컷`, `암컷`을 그대로 전송합니다.
+- Step 2 연령대는 `1살 미만`, `1살 이상 7살 미만`, `7살 이상`을 그대로 전송합니다.
 - O/X 문항은 화면에 `O 사용 중이에요`처럼 보여도 Google Form에는 `O`만 전송합니다.
 - Step 4 체크박스는 `유명해서`, `바르는 제품이 없어서`, `동물병원장님의 추천`, `잘 먹어서`를 그대로 전송합니다.
 - Google Form의 실제 선택지 값도 위 텍스트와 동일해야 합니다.

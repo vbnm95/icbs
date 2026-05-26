@@ -1,8 +1,8 @@
 export type BinaryAnswer = "O" | "X" | "";
 
 export type SurveyAnswers = {
-  name: string;
-  phone: string;
+  sex: string;
+  ageRange: string;
   currentUse: BinaryAnswer;
   reasons: string[];
   inconvenience: BinaryAnswer;
@@ -10,8 +10,8 @@ export type SurveyAnswers = {
 };
 
 export type SurveyStepId =
-  | "name"
-  | "phone"
+  | "sex"
+  | "ageRange"
   | "currentUse"
   | "reasons"
   | "inconvenience"
@@ -29,9 +29,7 @@ export type SurveyStep = {
   progress: number;
   question: string;
   subtitle?: string;
-  kind: "text" | "phone" | "single" | "multi";
-  fieldLabel?: string;
-  placeholder?: string;
+  kind: "single" | "multi";
   helperText: string;
   choices?: SurveyChoice[];
   cta?: string;

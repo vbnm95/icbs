@@ -5,9 +5,6 @@ import { FormEvent, ReactNode, useMemo, useState } from "react";
 import {
   ArrowRight,
   Clock3,
-  LockKeyhole,
-  Phone,
-  User,
 } from "lucide-react";
 import { ChoiceButton } from "@/components/ChoiceButton";
 import { CompletionScreen } from "@/components/CompletionScreen";
@@ -17,7 +14,6 @@ import { SurveyLayout } from "@/components/SurveyLayout";
 import {
   INITIAL_SURVEY_ANSWERS,
   SURVEY_STEPS,
-  formatPhoneNumber,
   validateAllAnswers,
   validateStepAnswer,
 } from "@/lib/survey";
@@ -46,7 +42,19 @@ export function SurveyApp() {
     setSubmitError("");
   }
 
-  function updateSingleAnswer(stepId: SurveyStepId, value: "O" | "X") {
+  function updateSingleAnswer(stepId: SurveyStepId, value: string) {
+    if (stepId === "sex") {
+      updateAnswer("sex", value);
+    }
+
+    if (stepId === "ageRange") {
+      updateAnswer("ageRange", value);
+    }
+
+    if (value !== "O" && value !== "X") {
+      return;
+    }
+
     if (stepId === "currentUse") {
       updateAnswer("currentUse", value);
     }
@@ -180,24 +188,6 @@ export function SurveyApp() {
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <QuestionCard question={currentStep.question} subtitle={currentStep.subtitle} />
 
-        {currentStep.kind === "text" || currentStep.kind === "phone" ? (
-          <InputQuestion
-            stepId={currentStep.id}
-            label={currentStep.fieldLabel ?? ""}
-            placeholder={currentStep.placeholder ?? ""}
-            value={currentStep.id === "name" ? answers.name : answers.phone}
-            onChange={(value) => {
-              if (currentStep.id === "phone") {
-                updateAnswer("phone", formatPhoneNumber(value));
-                return;
-              }
-
-              updateAnswer("name", value);
-            }}
-            helperText={currentStep.helperText}
-          />
-        ) : null}
-
         {currentStep.kind === "single" && currentStep.choices ? (
           <SingleChoiceQuestion
             stepId={currentStep.id}
@@ -322,65 +312,16 @@ function GuideBubble({ children, compact = false, trailingIcon }: GuideBubblePro
   );
 }
 
-type InputQuestionProps = {
-  stepId: SurveyStepId;
-  label: string;
-  placeholder: string;
-  value: string;
-  helperText: string;
-  onChange: (value: string) => void;
-};
-
-function InputQuestion({
-  stepId,
-  label,
-  placeholder,
-  value,
-  helperText,
-  onChange,
-}: InputQuestionProps) {
-  const inputId = `survey-${stepId}`;
-  const Icon = stepId === "phone" ? Phone : User;
-
-  return (
-    <div className="rounded-[24px] border border-[#E7EEF7] bg-white p-5 shadow-soft">
-      <label htmlFor={inputId} className="text-base font-black text-[#4D8CDC]">
-        {label}
-      </label>
-      <div className="relative mt-4">
-        <Icon
-          className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#9AA8B6]"
-          aria-hidden="true"
-        />
-        <input
-          id={inputId}
-          type="text"
-          autoComplete={stepId === "phone" ? "tel" : "name"}
-          inputMode={stepId === "phone" ? "numeric" : "text"}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          placeholder={placeholder}
-          className="min-h-14 w-full rounded-[18px] border-2 border-[#E4ECF5] bg-white pl-12 pr-4 text-lg font-bold text-[#101D2E] placeholder:text-[#AAB6C2]"
-        />
-      </div>
-      <p className="mt-4 flex items-center justify-center gap-2 text-xs font-bold leading-relaxed text-[#6B7B8B]">
-        <LockKeyhole className="size-4" aria-hidden="true" />
-        {helperText}
-      </p>
-    </div>
-  );
-}
-
 type SingleChoiceQuestionProps = {
   stepId: SurveyStepId;
   answers: SurveyAnswers;
-  onSelect: (value: "O" | "X") => void;
+  onSelect: (value: string) => void;
 };
 
 function SingleChoiceQuestion({ stepId, answers, onSelect }: SingleChoiceQuestionProps) {
   const step = SURVEY_STEPS.find((surveyStep) => surveyStep.id === stepId);
-  const selectedValue = answers[stepId];
-  const useTiles = stepId === "inconvenience" || stepId === "willingness";
+  const selectedValue = stepId === "reasons" ? "" : answers[stepId];
+  const useTiles = stepId === "currentUse" || stepId === "inconvenience" || stepId === "willingness";
 
   if (!step?.choices) {
     return null;
@@ -394,7 +335,7 @@ function SingleChoiceQuestion({ stepId, answers, onSelect }: SingleChoiceQuestio
           choice={choice}
           selected={selectedValue === choice.value}
           layout={useTiles ? "tile" : "list"}
-          onClick={() => onSelect(choice.value as "O" | "X")}
+          onClick={() => onSelect(choice.value)}
         />
       ))}
     </div>
