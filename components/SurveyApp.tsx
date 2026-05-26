@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { ChoiceButton } from "@/components/ChoiceButton";
 import { CompletionScreen } from "@/components/CompletionScreen";
+import { KakaoChannelScreen } from "@/components/KakaoChannelScreen";
 import { QuestionCard } from "@/components/QuestionCard";
 import { SurveyLayout } from "@/components/SurveyLayout";
 import {
@@ -28,6 +29,7 @@ export function SurveyApp() {
   const [answers, setAnswers] = useState<SurveyAnswers>(INITIAL_SURVEY_ANSWERS);
   const [stepIndex, setStepIndex] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showKakaoChannel, setShowKakaoChannel] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
@@ -81,19 +83,7 @@ export function SurveyApp() {
     setSubmitError("");
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!canContinue || isSubmitting) {
-      return;
-    }
-
-    if (!isLastStep) {
-      setStepIndex((current) => current + 1);
-      setSubmitError("");
-      return;
-    }
-
+  async function submitSurvey() {
     const validation = validateAllAnswers(answers);
 
     if (!validation.ok) {
@@ -125,12 +115,39 @@ export function SurveyApp() {
     }
   }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!canContinue || isSubmitting) {
+      return;
+    }
+
+    if (!isLastStep) {
+      setStepIndex((current) => current + 1);
+      setSubmitError("");
+      return;
+    }
+
+    setShowKakaoChannel(true);
+    setSubmitError("");
+  }
+
   function resetSurvey() {
     setAnswers(INITIAL_SURVEY_ANSWERS);
     setStepIndex(0);
     setSubmitError("");
     setIsCompleted(false);
     setHasStarted(false);
+    setShowKakaoChannel(false);
+  }
+
+  function returnToLastQuestion() {
+    if (isSubmitting) {
+      return;
+    }
+
+    setShowKakaoChannel(false);
+    setSubmitError("");
   }
 
   if (!hasStarted) {
@@ -139,6 +156,17 @@ export function SurveyApp() {
 
   if (isCompleted) {
     return <CompletionScreen onReset={resetSurvey} />;
+  }
+
+  if (showKakaoChannel) {
+    return (
+      <KakaoChannelScreen
+        isSubmitting={isSubmitting}
+        submitError={submitError}
+        onBack={returnToLastQuestion}
+        onSubmit={submitSurvey}
+      />
+    );
   }
 
   return (

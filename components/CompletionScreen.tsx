@@ -18,7 +18,7 @@ export function CompletionScreen({ onReset }: CompletionScreenProps) {
   return (
     <SurveyLayout
       progress={100}
-      title="설문지 제출을 누르시면 참여가 완료됩니다 감사합니다 :)"
+      title="설문에 참여해 주셔서 감사합니다 :)"
       subtitle="설문 참여 확인 후 인섹탈 콤보 안내서를 받으시면 웰케어 데일리 5일치 체험팩을 드립니다!"
     >
       <section className="mt-8 space-y-5">
@@ -61,7 +61,7 @@ export function CompletionScreen({ onReset }: CompletionScreenProps) {
             <span className="grid size-8 place-items-center rounded-full bg-[#67A8F2] text-white">
               <Check className="size-5" strokeWidth={3} aria-hidden="true" />
             </span>
-            안내 메시지를 받을 수 있도록 연락처를 확인해주세요.
+            감사합니다.
           </div>
         </div>
 
