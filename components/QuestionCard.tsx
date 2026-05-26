@@ -1,4 +1,5 @@
-import { Heart, PawPrint } from "lucide-react";
+import Image from "next/image";
+import { PawPrint } from "lucide-react";
 
 type QuestionCardProps = {
   question: string;
@@ -8,28 +9,28 @@ type QuestionCardProps = {
 export function QuestionCard({ question, subtitle }: QuestionCardProps) {
   return (
     <section className="relative flex gap-3" aria-labelledby="survey-question">
-      <div className="mt-8 grid size-16 shrink-0 place-items-center rounded-full bg-[#D9ECFF] shadow-sm">
-        <span className="text-4xl" aria-hidden="true">
-          🐶
-        </span>
+      <div className="mt-7 grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-[#E8F4FF]">
+        <Image
+          src="/images/insectal-avatar.png"
+          alt=""
+          width={48}
+          height={48}
+          className="size-full object-cover"
+        />
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="mb-2 flex items-center gap-2 text-base font-extrabold text-[#4F8FEA]">
+        <div className="mb-2 flex items-center gap-1.5 text-xs font-extrabold text-[#67A9FF]">
           <span>인섹탈 가이드</span>
-          <PawPrint className="size-4" aria-hidden="true" />
+          <PawPrint className="size-3.5" aria-hidden="true" />
         </div>
-        <div className="relative rounded-[26px] bg-white/95 px-5 py-5 text-[#101D2E] shadow-soft">
-          <h2 id="survey-question" className="text-xl font-extrabold leading-relaxed">
+        <div className="rounded-[24px] border border-[#E7EEF7] bg-white px-5 py-5 text-[#101D2E] shadow-soft">
+          <h2 id="survey-question" className="text-lg font-extrabold leading-relaxed">
             {question}
           </h2>
           {subtitle ? (
-            <p className="mt-2 text-base font-semibold text-slate-500">{subtitle}</p>
+            <p className="mt-2 text-sm font-semibold text-[#6B7B8B]">{subtitle}</p>
           ) : null}
-          <Heart
-            className="absolute bottom-4 right-4 size-5 fill-[#4F8FEA] text-[#4F8FEA]"
-            aria-hidden="true"
-          />
         </div>
       </div>
     </section>

@@ -1,0 +1,6 @@
+<svg width="144" height="44" viewBox="0 0 144 44" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="welcare-title">
+  <title id="welcare-title">WelCare</title>
+  <path d="M95.3 6.2C103.3 2.5 110.4 4.4 115 8.1C109.6 14.3 101.9 17 92.6 14.7C93 11.3 93.8 8.4 95.3 6.2Z" fill="#5CC65F"/>
+  <path d="M97 13.9C102.4 10.8 108 9.2 113.8 8.3" stroke="#3D9D45" stroke-width="2.2" stroke-linecap="round"/>
+  <text x="9" y="31" fill="#2A211D" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="25" font-style="italic" font-weight="800" letter-spacing="-1.1">WelCare</text>
+</svg>

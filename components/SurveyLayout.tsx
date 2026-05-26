@@ -1,4 +1,5 @@
-import { ArrowLeft, Gift, Heart, PawPrint } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, Heart } from "lucide-react";
 import { ProgressBar } from "@/components/ProgressBar";
 
 type SurveyLayoutProps = {
@@ -10,54 +11,49 @@ type SurveyLayoutProps = {
   totalSteps?: number;
   showBack?: boolean;
   onBack?: () => void;
-  showEventBadge?: boolean;
 };
 
 export function SurveyLayout({
   children,
   progress,
-  title = "우리 아이 구충제 체크",
-  subtitle = "간단한 설문에 답하고 부스 사은품을 받아보세요",
+  title = "우리 아이 구충제, 어떻게 사용하고 계신가요?",
+  subtitle,
   stepNumber,
   totalSteps = 6,
   showBack = false,
   onBack,
-  showEventBadge = true,
 }: SurveyLayoutProps) {
+  const compact = Boolean(stepNumber);
+
   return (
-    <main className="flex min-h-[100svh] justify-center bg-[#F8F4EE] text-[#173B67] sm:p-6">
-      <div className="relative min-h-[100svh] w-full max-w-[430px] overflow-hidden bg-[#FFFCF6] px-5 pb-[calc(24px+env(safe-area-inset-bottom))] pt-7 shadow-2xl sm:min-h-[920px] sm:rounded-[48px] sm:border-[10px] sm:border-[#101114] sm:px-6 sm:pt-14">
+    <main className="flex min-h-[100svh] justify-center bg-[#EEF7FF] text-[#0F345A] sm:p-1">
+      <div className="relative min-h-[100svh] w-full max-w-[430px] overflow-hidden bg-[#FFFDF9] px-8 pb-[calc(26px+env(safe-area-inset-bottom))] pt-7 shadow-[0_26px_70px_rgba(73,139,213,0.24)] sm:min-h-[790px] sm:rounded-[34px] sm:border sm:border-[#DCEEFF]">
         <div
-          className="pointer-events-none absolute left-1/2 top-5 z-20 hidden h-9 w-32 -translate-x-1/2 rounded-full bg-black sm:block"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#EAF5FF] to-transparent"
           aria-hidden="true"
         />
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="absolute -bottom-8 left-1/2 h-36 w-[130%] -translate-x-1/2 rounded-t-[50%] bg-[#E7F3FF]" />
-          <PawPrint className="absolute right-8 top-[38%] size-16 rotate-12 text-orange-100" />
-          <PawPrint className="absolute bottom-40 left-6 size-10 -rotate-12 text-orange-100" />
-          <Heart className="absolute right-10 top-24 size-9 text-[#83B4F5]" />
-          <Heart className="absolute bottom-52 right-16 size-6 fill-[#4F8FEA] text-[#4F8FEA]" />
-          <span className="absolute left-9 bottom-48 text-3xl text-[#83B4F5]">⌁</span>
-          <span className="absolute right-8 bottom-28 text-2xl text-orange-200">✦</span>
-        </div>
+        <div
+          className="pointer-events-none absolute -right-20 top-28 size-48 rounded-full bg-[#EAF5FF] blur-3xl"
+          aria-hidden="true"
+        />
 
         <div className="relative z-10">
-          <div className="mb-5 flex h-9 items-center justify-between">
+          <div className="mb-2 flex h-12 items-center justify-between">
             {showBack ? (
               <button
                 type="button"
                 onClick={onBack}
-                className="grid size-9 place-items-center rounded-full text-[#286BC8] transition hover:bg-[#EAF3FF]"
+                className="grid size-11 place-items-center rounded-full border border-[#D6E9FF] bg-white text-[#5A9BED] shadow-sm transition hover:bg-[#F3F9FF]"
                 aria-label="이전 질문으로 돌아가기"
               >
-                <ArrowLeft className="size-6" />
+                <ArrowLeft className="size-5" />
               </button>
             ) : (
-              <span className="size-9" aria-hidden="true" />
+              <span className="size-11" aria-hidden="true" />
             )}
 
             {stepNumber ? (
-              <div className="rounded-full bg-[#EEF6FF] px-5 py-1.5 text-lg font-extrabold text-[#4F8FEA]">
+              <div className="rounded-full bg-[#EEF6FF] px-4 py-1.5 text-sm font-extrabold text-[#5A9BED]">
                 {stepNumber} / {totalSteps}
               </div>
             ) : (
@@ -65,34 +61,38 @@ export function SurveyLayout({
             )}
 
             <div
-              className="grid size-11 place-items-center rounded-full border-2 border-[#9AC3F7] bg-white/70 text-[#4F8FEA]"
+              className="grid size-11 place-items-center rounded-full border-2 border-[#9AC9FF] bg-white text-[#75B0F4]"
               aria-hidden="true"
             >
-              <Heart className="size-5 fill-[#6FA8F4]" />
+              <Heart className="size-5" />
             </div>
           </div>
 
           <header className="text-center">
-            <h1 className="text-[2rem] font-black leading-tight tracking-normal text-[#173B67] sm:text-[2.15rem]">
+            <Image
+              src="/images/valvet.png"
+              alt="VALVET Ltd."
+              width={170}
+              height={57}
+              priority
+              className="mx-auto h-auto w-[118px]"
+            />
+            <h1
+              className={[
+                "font-black leading-tight tracking-normal text-[#123D67]",
+                compact ? "mt-5 text-[1.65rem]" : "mt-8 text-[1.9rem]",
+              ].join(" ")}
+            >
               {title}
-              <PawPrint className="ml-1 inline size-5 text-[#4F8FEA]" aria-hidden="true" />
             </h1>
-            <p className="mt-3 text-base font-semibold leading-relaxed text-slate-600">
-              {subtitle}
-            </p>
-            {showEventBadge ? (
-              <div className="mx-auto mt-5 inline-flex max-w-full items-center gap-3 rounded-full border border-slate-200 bg-white/85 px-4 py-2 text-sm font-bold text-slate-800 shadow-sm">
-                <span className="inline-flex items-center gap-1.5 text-[#F97316]">
-                  <Gift className="size-5" aria-hidden="true" />
-                  부스 이벤트
-                </span>
-                <span className="h-5 w-px bg-slate-200" aria-hidden="true" />
-                <span>설문 완료 시 사은품 증정</span>
-              </div>
+            {subtitle ? (
+              <p className="mx-auto mt-3 max-w-[18rem] text-sm font-semibold leading-relaxed text-[#6B7B8B]">
+                {subtitle}
+              </p>
             ) : null}
           </header>
 
-          <div className="mt-7">
+          <div className={compact ? "mt-5" : "mt-10"}>
             <ProgressBar progress={progress} />
           </div>
 

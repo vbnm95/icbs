@@ -5,13 +5,13 @@ type ProgressBarProps = {
 export function ProgressBar({ progress }: ProgressBarProps) {
   return (
     <div className="flex items-center gap-3" aria-label={`진행률 ${progress}%`}>
-      <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-200/70 shadow-inner">
+      <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#E9EEF4]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[#72A9F6] to-[#4F8FEA] transition-all duration-500"
+          className="h-full rounded-full bg-[#75B0F4] transition-all duration-500"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <span className="min-w-12 text-right text-lg font-extrabold text-[#4F8FEA]">
+      <span className="min-w-10 text-right text-sm font-extrabold text-[#4B86FF]">
         {progress}%
       </span>
     </div>

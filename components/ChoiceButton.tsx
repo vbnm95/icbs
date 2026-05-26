@@ -27,41 +27,39 @@ export function ChoiceButton({
       aria-pressed={selected}
       onClick={onClick}
       className={[
-        "group relative w-full border bg-white/90 text-left text-[#102B4D] shadow-soft transition",
-        "hover:-translate-y-0.5 hover:border-[#4F8FEA]/70 active:translate-y-0",
+        "group relative w-full border bg-white text-left text-[#102B4D] shadow-soft transition",
+        "hover:-translate-y-0.5 hover:border-[#67A8F2]/80 active:translate-y-0",
         selected
-          ? "border-[#4F8FEA] bg-[#F1F7FF] ring-2 ring-[#4F8FEA]/20"
-          : "border-white/80",
+          ? "border-[#67A8F2] bg-[#F3F9FF] ring-2 ring-[#67A8F2]/20"
+          : "border-[#E7EEF7]",
         isTile
-          ? "flex min-h-36 flex-col items-center justify-center gap-4 rounded-[26px] p-5 text-center"
-          : "flex min-h-20 items-center gap-4 rounded-[24px] px-5 py-4",
+          ? "flex min-h-32 flex-col items-center justify-center gap-3 rounded-[22px] p-4 text-center"
+          : "flex min-h-16 items-center gap-4 rounded-[22px] px-4 py-3",
       ].join(" ")}
     >
       <span
         className={[
           "grid shrink-0 place-items-center border transition",
           selected
-            ? "border-[#4F8FEA] bg-gradient-to-br from-[#72A9F6] to-[#4F8FEA] text-white"
-            : "border-slate-200 bg-[#EEF6FF] text-[#4F8FEA]",
+            ? "border-[#67A8F2] bg-[#67A8F2] text-white"
+            : "border-[#DCE9F6] bg-[#F0F7FF] text-[#67A8F2]",
           multiple ? "rounded-xl" : "rounded-full",
-          isTile ? "size-16" : "size-12",
+          isTile ? "size-14" : "size-11",
         ].join(" ")}
         aria-hidden="true"
       >
         {multiple && !selected ? null : (
-          <MarkIcon className={isTile ? "size-10" : "size-7"} strokeWidth={selected ? 3 : 2.4} />
+          <MarkIcon className={isTile ? "size-8" : "size-6"} strokeWidth={selected ? 3 : 2.4} />
         )}
       </span>
 
-      <span className={isTile ? "text-xl font-extrabold" : "text-lg font-extrabold"}>
-        {choice.icon === "o" && "O "}
-        {choice.icon === "x" && "X "}
+      <span className={isTile ? "text-base font-extrabold" : "text-base font-extrabold"}>
         {choice.label}
       </span>
 
       {!isTile && selected ? (
         <span
-          className="ml-auto grid size-7 place-items-center rounded-full bg-[#4F8FEA] text-white"
+          className="ml-auto grid size-7 place-items-center rounded-full bg-[#67A8F2] text-white"
           aria-hidden="true"
         >
           <Check className="size-4" strokeWidth={3} />

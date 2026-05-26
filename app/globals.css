@@ -4,7 +4,7 @@
 
 :root {
   color-scheme: light;
-  background: #f8f4ee;
+  background: #eef7ff;
 }
 
 * {
@@ -12,16 +12,16 @@
 }
 
 html {
-  background: #f8f4ee;
+  background: #eef7ff;
 }
 
 body {
   min-height: 100svh;
   margin: 0;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.86), transparent 34rem),
-    #f8f4ee;
-  color: #173b67;
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.96), transparent 32rem),
+    #eef7ff;
+  color: #0f345a;
   font-family: Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
 
@@ -32,6 +32,6 @@ input {
 
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid rgba(79, 143, 234, 0.42);
+  outline: 3px solid rgba(103, 168, 242, 0.42);
   outline-offset: 3px;
 }

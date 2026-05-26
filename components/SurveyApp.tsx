@@ -1,16 +1,12 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import Image from "next/image";
+import { FormEvent, ReactNode, useMemo, useState } from "react";
 import {
   ArrowRight,
-  Check,
   Clock3,
-  Info,
-  Lightbulb,
   LockKeyhole,
   Phone,
-  Pipette,
-  ShieldCheck,
   User,
 } from "lucide-react";
 import { ChoiceButton } from "@/components/ChoiceButton";
@@ -31,6 +27,7 @@ const TOTAL_STEPS = SURVEY_STEPS.length;
 export function SurveyApp() {
   const [answers, setAnswers] = useState<SurveyAnswers>(INITIAL_SURVEY_ANSWERS);
   const [stepIndex, setStepIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
@@ -45,6 +42,20 @@ export function SurveyApp() {
   function updateAnswer<Key extends keyof SurveyAnswers>(key: Key, value: SurveyAnswers[Key]) {
     setAnswers((current) => ({ ...current, [key]: value }));
     setSubmitError("");
+  }
+
+  function updateSingleAnswer(stepId: SurveyStepId, value: "O" | "X") {
+    if (stepId === "currentUse") {
+      updateAnswer("currentUse", value);
+    }
+
+    if (stepId === "inconvenience") {
+      updateAnswer("inconvenience", value);
+    }
+
+    if (stepId === "willingness") {
+      updateAnswer("willingness", value);
+    }
   }
 
   function toggleReason(reason: string) {
@@ -108,7 +119,7 @@ export function SurveyApp() {
 
       setIsCompleted(true);
     } catch {
-      setSubmitError("제출에 실패했습니다. 부스 직원에게 문의해주세요.");
+      setSubmitError("제출에 실패했습니다. 잠시 후 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -119,6 +130,11 @@ export function SurveyApp() {
     setStepIndex(0);
     setSubmitError("");
     setIsCompleted(false);
+    setHasStarted(false);
+  }
+
+  if (!hasStarted) {
+    return <IntroScreen onStart={() => setHasStarted(true)} />;
   }
 
   if (isCompleted) {
@@ -128,12 +144,12 @@ export function SurveyApp() {
   return (
     <SurveyLayout
       progress={currentStep.progress}
-      stepNumber={stepIndex > 0 ? stepIndex + 1 : undefined}
+      stepNumber={stepIndex + 1}
       totalSteps={TOTAL_STEPS}
       showBack={stepIndex > 0}
       onBack={goBack}
     >
-      <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <QuestionCard question={currentStep.question} subtitle={currentStep.subtitle} />
 
         {currentStep.kind === "text" || currentStep.kind === "phone" ? (
@@ -158,7 +174,7 @@ export function SurveyApp() {
           <SingleChoiceQuestion
             stepId={currentStep.id}
             answers={answers}
-            onSelect={(value) => updateAnswer(currentStep.id as keyof SurveyAnswers, value)}
+            onSelect={(value) => updateSingleAnswer(currentStep.id, value)}
           />
         ) : null}
 
@@ -176,8 +192,6 @@ export function SurveyApp() {
           </div>
         ) : null}
 
-        <InfoPanel stepId={currentStep.id} helperText={currentStep.helperText} />
-
         {submitError ? (
           <div
             role="alert"
@@ -192,19 +206,91 @@ export function SurveyApp() {
         <button
           type="submit"
           disabled={!canContinue || isSubmitting}
-          className="flex min-h-16 w-full items-center justify-center gap-4 rounded-[24px] bg-gradient-to-r from-[#72A9F6] to-[#3F7FE2] px-6 text-2xl font-black text-white shadow-button transition enabled:hover:-translate-y-0.5 enabled:active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-45"
+          className="flex min-h-16 w-full items-center justify-center gap-5 rounded-[22px] bg-[#67A8F2] px-6 text-xl font-black text-white shadow-button transition enabled:hover:-translate-y-0.5 enabled:active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-45"
         >
           <span>{isSubmitting ? "제출 중..." : currentStep.cta ?? "다음"}</span>
-          <ArrowRight className="size-8" aria-hidden="true" />
+          <ArrowRight className="size-7" aria-hidden="true" />
         </button>
-
-        <div className="text-center">
-          <span className="inline-flex rounded-full border border-slate-200 bg-white/70 px-5 py-1.5 text-sm font-black text-[#4F8FEA]">
-            {stepIndex + 1} / {TOTAL_STEPS}
-          </span>
-        </div>
       </form>
     </SurveyLayout>
+  );
+}
+
+type IntroScreenProps = {
+  onStart: () => void;
+};
+
+function IntroScreen({ onStart }: IntroScreenProps) {
+  return (
+    <SurveyLayout progress={10} title="우리 아이 구충제, 어떻게 사용하고 계신가요?">
+      <section className="mt-10 space-y-5">
+        <GuideBubble>
+          <span>안녕하세요, 웰케어입니다 :)</span>
+          <span>반려동물 올인원 구충제 사용 경험에 대한 간단한 설문입니다.</span>
+          <span>응답해주신 내용은 제품 및 시장 조사 목적으로만 활용됩니다.</span>
+          <span>※ 작성해주신 개인정보는 응답 확인 및 안내 목적으로만 사용됩니다.</span>
+        </GuideBubble>
+
+        <GuideBubble compact trailingIcon={<Clock3 className="size-6 text-[#67A8F2]" />}>
+          <span>약 1분 정도 걸려요.</span>
+        </GuideBubble>
+
+        <div className="mx-auto max-w-[320px] pt-8">
+          <Image
+            src="/images/welcare-pets.png"
+            alt="하얀 강아지와 크림색 고양이"
+            width={620}
+            height={310}
+            priority
+            className="h-auto w-full rounded-[20px] object-contain"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={onStart}
+          className="flex min-h-16 w-full items-center justify-center gap-8 rounded-[22px] bg-[#67A8F2] px-6 text-xl font-black text-white shadow-button transition hover:-translate-y-0.5 active:translate-y-0"
+        >
+          <span>설문 시작하기</span>
+          <ArrowRight className="size-7" aria-hidden="true" />
+        </button>
+      </section>
+    </SurveyLayout>
+  );
+}
+
+type GuideBubbleProps = {
+  children: ReactNode;
+  compact?: boolean;
+  trailingIcon?: ReactNode;
+};
+
+function GuideBubble({ children, compact = false, trailingIcon }: GuideBubbleProps) {
+  return (
+    <div className="flex gap-3">
+      <div className="mt-2 grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-[#E8F4FF]">
+        <Image
+          src="/images/insectal-avatar.png"
+          alt=""
+          width={48}
+          height={48}
+          className="size-full object-cover"
+        />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="mb-2 text-xs font-extrabold text-[#67A9FF]">인섹탈 가이드</div>
+        <div
+          className={[
+            "flex items-center gap-5 rounded-[24px] border border-[#E7EEF7] bg-white px-5 text-[#101D2E] shadow-soft",
+            compact ? "min-h-14 py-3 text-base font-extrabold" : "min-h-32 py-5 text-base font-semibold leading-loose",
+          ].join(" ")}
+        >
+          <div className={compact ? "" : "flex flex-col"}>{children}</div>
+          {trailingIcon ? <span className="ml-auto shrink-0">{trailingIcon}</span> : null}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -229,13 +315,13 @@ function InputQuestion({
   const Icon = stepId === "phone" ? Phone : User;
 
   return (
-    <div className="rounded-[28px] bg-white/95 p-5 shadow-soft">
-      <label htmlFor={inputId} className="text-lg font-black text-[#286BC8]">
+    <div className="rounded-[24px] border border-[#E7EEF7] bg-white p-5 shadow-soft">
+      <label htmlFor={inputId} className="text-base font-black text-[#4D8CDC]">
         {label}
       </label>
       <div className="relative mt-4">
         <Icon
-          className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400"
+          className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#9AA8B6]"
           aria-hidden="true"
         />
         <input
@@ -246,10 +332,10 @@ function InputQuestion({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="min-h-16 w-full rounded-[22px] border-2 border-slate-200 bg-white pl-12 pr-4 text-xl font-bold text-[#101D2E] placeholder:text-slate-400"
+          className="min-h-14 w-full rounded-[18px] border-2 border-[#E4ECF5] bg-white pl-12 pr-4 text-lg font-bold text-[#101D2E] placeholder:text-[#AAB6C2]"
         />
       </div>
-      <p className="mt-4 flex items-center justify-center gap-2 text-sm font-bold leading-relaxed text-slate-500">
+      <p className="mt-4 flex items-center justify-center gap-2 text-xs font-bold leading-relaxed text-[#6B7B8B]">
         <LockKeyhole className="size-4" aria-hidden="true" />
         {helperText}
       </p>
@@ -273,7 +359,7 @@ function SingleChoiceQuestion({ stepId, answers, onSelect }: SingleChoiceQuestio
   }
 
   return (
-    <div className={useTiles ? "grid grid-cols-2 gap-4" : "space-y-4"}>
+    <div className={useTiles ? "grid grid-cols-2 gap-3" : "space-y-3"}>
       {step.choices.map((choice) => (
         <ChoiceButton
           key={choice.value}
@@ -287,67 +373,16 @@ function SingleChoiceQuestion({ stepId, answers, onSelect }: SingleChoiceQuestio
   );
 }
 
-type InfoPanelProps = {
-  stepId: SurveyStepId;
-  helperText: string;
-};
-
-function InfoPanel({ stepId, helperText }: InfoPanelProps) {
-  if (stepId === "inconvenience") {
-    return (
-      <div className="rounded-[24px] border border-[#CFE4FF] bg-[#F1F7FF] p-4 shadow-sm">
-        <p className="flex items-center gap-2 text-base font-black text-[#4F8FEA]">
-          <Lightbulb className="size-6" aria-hidden="true" />
-          예: 급여 스트레스, 먹이 거부, 복용 불편
-        </p>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-bold text-[#101D2E]">
-          {["급여 스트레스", "먹이 거부", "복용 불편"].map((label) => (
-            <div key={label} className="rounded-2xl bg-white/80 px-2 py-3">
-              <span className="mx-auto mb-2 grid size-9 place-items-center rounded-full bg-[#E7F3FF] text-[#286BC8]">
-                <Info className="size-5" aria-hidden="true" />
-              </span>
-              {label}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (stepId === "willingness") {
-    return (
-      <div className="flex items-center gap-4 rounded-[24px] border border-[#CFE4FF] bg-[#F1F7FF] p-4 text-base font-bold leading-relaxed text-[#173B67] shadow-sm">
-        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#4F8FEA] text-white">
-          <Info className="size-6" aria-hidden="true" />
-        </span>
-        <span>{helperText}</span>
-        <Pipette className="ml-auto size-12 shrink-0 text-[#286BC8]" aria-hidden="true" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex items-center gap-3 rounded-[22px] bg-white/85 px-4 py-4 text-sm font-bold leading-relaxed text-slate-700 shadow-sm">
-      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#4F8FEA] text-white">
-        {stepId === "currentUse" ? (
-          <Lightbulb className="size-5" aria-hidden="true" />
-        ) : stepId === "reasons" ? (
-          <Check className="size-5" strokeWidth={3} aria-hidden="true" />
-        ) : (
-          <ShieldCheck className="size-5" aria-hidden="true" />
-        )}
-      </span>
-      <span>{helperText}</span>
-    </div>
-  );
-}
-
 function PetPeek() {
   return (
-    <div className="flex items-end justify-center gap-4 pt-1" aria-hidden="true">
-      <span className="text-6xl leading-none drop-shadow-sm">🐶</span>
-      <span className="text-6xl leading-none drop-shadow-sm">🐱</span>
-      <Clock3 className="mb-2 size-7 text-[#4F8FEA]" />
+    <div className="mx-auto max-w-[220px] pt-1" aria-hidden="true">
+      <Image
+        src="/images/welcare-pets.png"
+        alt=""
+        width={360}
+        height={180}
+        className="h-auto w-full rounded-[18px] object-contain"
+      />
     </div>
   );
 }

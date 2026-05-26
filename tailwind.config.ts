@@ -9,13 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       boxShadow: {
-        soft: "0 18px 45px rgba(23, 59, 103, 0.12)",
-        button: "0 16px 28px rgba(79, 143, 234, 0.34)",
+        soft: "0 18px 38px rgba(31, 82, 135, 0.10)",
+        button: "0 16px 26px rgba(103, 168, 242, 0.38)",
       },
       colors: {
-        ink: "#173B67",
-        softBlue: "#4F8FEA",
-        cream: "#F8F4EE",
+        ink: "#0F345A",
+        softBlue: "#67A8F2",
+        cream: "#FFFDF9",
       },
       fontFamily: {
         sans: [
