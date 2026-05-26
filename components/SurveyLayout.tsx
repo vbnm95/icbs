@@ -70,10 +70,10 @@ export function SurveyLayout({
 
           <header className="text-center">
             <Image
-              src="/images/valvet.png"
-              alt="VALVET Ltd."
-              width={170}
-              height={57}
+              src="/images/insectal.png"
+              alt="INSECTAL"
+              width={955}
+              height={450}
               priority
               className="mx-auto h-auto w-[118px]"
             />

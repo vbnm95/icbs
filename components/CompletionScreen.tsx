@@ -18,8 +18,8 @@ export function CompletionScreen({ onReset }: CompletionScreenProps) {
   return (
     <SurveyLayout
       progress={100}
-      title="설문에 참여해 주셔서 감사합니다 :)"
-      subtitle="설문 참여 확인 후 인섹탈 콤보 안내서를 받으시면 웰케어 데일리 5일치 체험팩을 드립니다!"
+      title="참여해 주셔서 감사합니다 :)"
+      subtitle="아래 사은품 안내를 확인해 주세요!"
     >
       <section className="mt-8 space-y-5">
         <div className="mx-auto flex w-fit items-center gap-3 rounded-[22px] border border-[#D6E9FF] bg-[#F3F9FF] px-5 py-4 text-lg font-black text-[#4D8CDC] shadow-soft">
